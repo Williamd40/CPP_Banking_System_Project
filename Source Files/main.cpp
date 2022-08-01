@@ -5,6 +5,7 @@
 #include <map>
 #include "../Header Files/fileReadManip.h"
 #include <algorithm>
+#include <unistd.h>
 
 
 class customers{
@@ -125,23 +126,33 @@ int main() {
     };
     std::string passwordEnt;
     std::string password = userClassPtr->getPW(); // saving the users actual password
-    std::cout << "Welcome " << userClassPtr->getName() << "\nPlease enter your password: " <<std::endl; // asking for the user to enter a password
+    std::string userName = userClassPtr->getName();
+    std::cout << "Welcome " << userName << "\nPlease enter your password: " <<std::endl; // asking for the user to enter a password
     std::cin >> passwordEnt; // saving the users input
 
     if(passwordEnt!=password) 
     {             // checking if the users password is correct
+        int i = 1;
         std::cout << "Error: incorrect password" << std::endl;
-        while(password != userClassPtr->getPW())
+        while(passwordEnt != password)
             {
-                std::cout << "Welcome " << userClassPtr->getName() << "\nPlease enter your password: " << std::endl;
+                if(i == 3){
+                    std::cout <<"\nError: too many password attempts. Please wait." << std::endl;
+                    sleep(5);
+                    i=0;
 
+                }
+                std::cout <<"\nPlease enter your password: " << std::endl;
+                std::cin >> passwordEnt; // saving the users input
+                i++;
             }
     }
-    
 
-    
-
-
+    std::cout << "Thank you " << userName << ".\nWhat are you doing today?" << std::endl;
+    std::cout << "1)Check Balance\n2)Check Debt\n3)Check Overdraft\n4)Check if Premium\n5)Change Password\n6)Change Secret Question and Answer"<< std::endl;
+    int userChoice = NULL;
+    bool userDone = false;
+    // while(userD)
 
     
     return 0;
