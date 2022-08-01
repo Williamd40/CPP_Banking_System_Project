@@ -23,7 +23,7 @@ protected:
     std::string Password;
 
 public:
-    customers(std::vector<std::string> customerDetails) {   
+    customers(std::vector<std::string> customerDetails) {   // constructor for the customer class
         foreName = customerDetails[0];
         Surname = customerDetails[1];
         Email = customerDetails[2];
@@ -38,8 +38,8 @@ public:
             Premium = false;
         ID = std::stoi(customerDetails[9]);
         Password = customerDetails[10];
-        
     }
+    ~customers(); // destructor for the customer class
     int getId(){
         return ID;
     }
@@ -62,6 +62,7 @@ public:
 // };
 
 int main() {
+    std::ios::sync_with_stdio(false);
     std::string fileName = "../Data Files/bankDetails.csv";
     std::vector<std::vector<std::string>> fileContent =  readFile(fileName);
 
@@ -150,7 +151,7 @@ int main() {
 
     std::cout << "Thank you " << userName << ".\nWhat are you doing today?" << std::endl;
     std::cout << "1)Check Balance\n2)Check Debt\n3)Check Overdraft\n4)Check if Premium\n5)Change Password\n6)Change Secret Question and Answer"<< std::endl;
-    int userChoice = NULL;
+    int userChoice;
     bool userDone = false;
     // while(userD)
 
