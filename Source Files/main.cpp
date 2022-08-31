@@ -58,6 +58,11 @@ public:
     std::string getPW()
     {
         return Password;
+
+    }
+    void setPW(std::string newPW)
+    {
+        Password = newPW;
     }
 
     float getBall()
@@ -74,6 +79,23 @@ public:
     {
         AmountInAccount+=*amountIn;
         printf("Your new balance is: %f", AmountInAccount);
+    }
+
+    void payDebtFunc(float* amountForDebtPayment)
+    {
+        if (AmountInDebt<*amountForDebtPayment) {
+            AmountInDebt = 0;
+            AmountInAccount -=*amountForDebtPayment;
+            std::cout << "Congratulations, your debt is paid off.\n Your new balance is: " << AmountInAccount << std::endl;
+            
+        }
+        else {
+        AmountInDebt-=*amountForDebtPayment;
+        AmountInAccount -=*amountForDebtPayment;
+        printf("Your new debt balance is: %f", AmountInDebt);
+        }
+
+
     }
     bool isPremium()
     {
@@ -232,11 +254,24 @@ int main() {
                         std::cin >> payDebt;
                     }
             if (payDebt=="yes"){
-                std::cout << "How much of your available balance would you like to pay?\n";
-                int toPay;
-                std::cout << "Available balance: " << userClassPtr->getBall() << std::endl;
-                std::cin >> toPay;
-            }
+                int currentBalance = userClassPtr->getBall();
+                if (currentBalance <= 0){
+                    printf("Error account is either empty or negative!.\nAvailable balance = %i",currentBalance);
+                }
+                else{
+                    std::cout << "How much of your available balance would you like to pay?\n";
+                    float toPay;
+                    int balance = userClassPtr->getBall();
+                    std::cout << "Available balance: " << balance << std::endl;
+                    std::cin >> toPay;
+                    while (toPay>balance){
+                        std::cout << "ERROR: insufficient funds in account.\nAvailable balance is: " << balance << std::endl;
+                        std::cout << "How much of your available balance would you like to pay?\n";
+                        std::cin >> toPay;
+                    }
+                    userClassPtr->payDebtFunc(&toPay);
+                    }
+                }
         }
 
         else if (userChoice==3) { // taking user deposit DONE
@@ -272,6 +307,30 @@ int main() {
         } 
         
         else if (userChoice==6) { // Password change WIP
+        printf("Please enter current password:");
+        passwordEnt ="";
+        std::cin >> passwordEnt;
+        std::string actualPW = userClassPtr->getPW() ; 
+        int attempts = 0;
+        while (actualPW != passwordEnt) // while loop for getting correct user password if they want to change it
+        {
+            if (attempts > 2){
+                printf("Maximum attempts reached, account locked.");
+                std::terminate;
+            }
+            printf("Error: incorrect password.\nAttempt number %i.\nPlease enter correct password: ", attempts);
+            attempts ++;
+            std::cin >> passwordEnt;
+
+        }
+        
+        printf("Correct password. Please enter new password below (case sensitive):\n");
+        std::string newPassword;
+        std::cin >> newPassword;
+        // while(!=newPassword) {
+
+        // }
+        userClassPtr->setPW(newPassword);
         }
         
         else if (userChoice==7) { // change secret question and answer WIP
